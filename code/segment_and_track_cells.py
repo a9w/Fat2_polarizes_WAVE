@@ -10,7 +10,7 @@ Output: A tif timelapse with labeled cells.
 import os
 from imageio import volread
 
-# Add the tools directory to Python's path list and import imtools
+# Internal functions
 from functions.track import TrackedTimelapse
 from functions.segment import largest_object_mask_timelapse
 

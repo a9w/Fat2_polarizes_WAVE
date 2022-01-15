@@ -1,6 +1,5 @@
 """Functions for segmenting images."""
 
-from .correct import apply_corrections, extract_correction_masks, overlay_corrections
 from .interface import (
     interface_endpoints_mask,
     interface_endpoints_coords,
@@ -20,19 +19,14 @@ from .tissue import (
     select_border_adjacent,
     select_in_field,
     select_mask_adjacent,
-    wing_watershed,
     segment_hemijunctions,
     cell_edges_mask,
     cell_interiors_mask,
     cell_vertices_mask,
-    neighbor_array,
     neighbor_array_nr,
 )
 
 __all__ = [
-    "apply_corrections",
-    "extract_correction_masks",
-    "overlay_corrections",
     "interface_endpoints_mask",
     "interface_endpoints_coords",
     "interface_shape_edge_method",
@@ -47,11 +41,9 @@ __all__ = [
     "select_border_adjacent",
     "select_in_field",
     "select_mask_adjacent",
-    "wing_watershed",
     "segment_hemijunctions",
     "cell_edges_mask",
     "cell_interiors_mask",
     "cell_vertices_mask",
-    "neighbor_array",
-    "neighbor_array_nr",
+    "neighbor_array_nr"
 ]

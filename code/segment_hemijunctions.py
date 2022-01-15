@@ -1,7 +1,10 @@
 """Segment hemijunctions from a directory of datasets."""
 
+# Import packages
 import os
 from imageio import volread, volwrite
+
+# Internal functions
 from functions.segment import (
     segment_hemijunctions_timelapse,
     largest_object_mask_timelapse)

@@ -2,7 +2,6 @@
 
 import numpy as np
 import skfmm
-from scipy.ndimage import distance_transform_edt
 from skimage.measure import find_contours, approximate_polygon
 from ..segment import interface_endpoints_coords, edge_between_neighbors
 from ..utils import points_to_angle
@@ -155,52 +154,6 @@ def polygonal_perimeter(shape, tolerance=1):
             perimeter += segment_length
         total += perimeter
     return total
-
-
-def protrusion_length_euclidean(cell_s, cell_r, interface):
-    """
-    Measure length of a protrusion.
-
-    Each protrusion is defined in terms of a sending cell,
-    a receiving cell, and an interface mask that falls between
-    the two cells.
-
-    Parameters
-    ----------
-    cell_s : 2D bool ndarray
-        Pixels in the sending cell are True, rest are False
-    cell_r : 2D bool ndarray
-        Pixels in the receiving cell are True, rest are False
-    interface : 2D bool ndarray
-        Pixels in the interface are True, rest are False
-
-    Returns
-    -------
-    protrusion_length : float
-        Longest Euclidean distance of interface from cell_s
-    coords_tip : tuple of 2 ints
-        Coordinates of protrusion tip
-    coords_closest : tuple of 2 ints
-        Coordinates of point on sending cell that is closest
-        to the protrusion tip
-    """
-    # Calculate distances from cell_s
-    d_to_cell_s, inds = distance_transform_edt(np.invert(cell_s), return_indices=True)
-
-    # Consider only distances inside the interface
-    d_to_cell_s[interface == 0] = 0
-
-    # Find tip of protrusion: location with max distance within interface
-    protrusion_length = np.max(d_to_cell_s)
-
-    # Find coordinates of protrusion tip
-    coords_tip = np.where(d_to_cell_s == protrusion_length)
-    coords_tip = (int(coords_tip[0]), int(coords_tip[1]))
-
-    # Find coordinates of the closest point on cell_s
-    coords_closest = (int(inds[0][coords_tip]), int(inds[1][coords_tip]))
-
-    return protrusion_length, coords_closest, coords_tip
 
 
 def protrusion_length_internal_path(cell_s, cell_r, interface):

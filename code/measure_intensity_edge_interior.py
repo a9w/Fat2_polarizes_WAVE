@@ -10,9 +10,12 @@ and mean intensities across the tissue, at edges, at interiors, and
 at edges-interiors.
 """
 
+# Import packages
 import numpy as np
 import pandas as pd
 from imageio import imread, volread
+
+# Internal functions
 from functions.segment import (cell_edges_mask,
                                 cell_interiors_mask,
                                 select_in_field)

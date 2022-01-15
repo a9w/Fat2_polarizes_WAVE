@@ -11,7 +11,6 @@ from .region import (
     interface_length_wiggly,
     neighbor_distance_cv,
     polygonal_perimeter,
-    protrusion_length_euclidean,
     protrusion_length_internal_path,
     protrusion_angle
 )
@@ -25,7 +24,6 @@ __all__ = [
     "interface_length_segment",
     "interface_length_wiggly",
     "polygonal_perimeter",
-    "protrusion_length_euclidean",
     "protrusion_length_internal_path",
     "protrusion_angle"
 ]

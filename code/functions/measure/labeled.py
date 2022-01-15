@@ -2,8 +2,8 @@
 
 import numpy as np
 import pandas as pd
-from skimage.measure import regionprops_table, label
-from ..segment import select_in_field, neighbor_array
+from skimage.measure import regionprops_table
+from ..segment import select_in_field
 from ..utils import validate_mask
 from .region import measure_one_hemijunction
 

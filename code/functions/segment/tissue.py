@@ -14,7 +14,7 @@ from skimage.morphology import (
     disk,
     remove_small_objects,
 )
-from skimage.segmentation import clear_border, flood, flood_fill, watershed
+from skimage.segmentation import clear_border, flood_fill, watershed
 from ..utils import validate_mask, dilate_simple
 from .interface import (
     edge_between_neighbors,
@@ -246,61 +246,6 @@ def select_mask_adjacent(im, mask=None):
     return mask_adjacent
 
 
-def wing_watershed(im, mask=None, blurring_sigma=1, threshold_sigma=21):
-    """
-    Apply watershed to a wing.
-
-    Take a 2D micrograph of a wing and segment it into labeled
-    domains. Expects an input image in which connected regions
-    of relatively dark pixels are separated by relatively lighter
-    pixels.
-
-    Similar to epithelium_watershed, but addresses an issue with "holes"
-    inside of "holes", and also corrects the segmentation behavior on the
-    outer boundaries. These functions could be combined if needed.
-
-    Parameters
-    ----------
-    im : 2D ndarray
-        Micrograph with cell interface label
-    mask : 2D bool ndarray
-        True pixels are kept, False pixels are masked
-    blurring_sigma : int
-        Sigma of Gaussian kernel used to blur the image
-    threshold_sigma : int
-        Sigma of Gaussian for locally adaptive threshold function
-
-    Returns
-    -------
-    im_labeled_regions : 2D ndarray
-        Each object has a unique integer ID
-    """
-    mask = validate_mask(im, mask)
-
-    # Gaussian blur
-    im_blurred = gaussian(im, sigma=blurring_sigma, preserve_range=True)
-
-    # Adaptive threshold, inverting image
-    adap_th = threshold_local(im_blurred, block_size=threshold_sigma)
-    im_thresholded = im_blurred < adap_th
-
-    # Set masked pixels to zero
-    im_thresholded[mask == 0] = True
-
-    # Fill the holes
-    im_flooded = flood_fill(im_thresholded, (0, 0), False)
-    im_flooded_mask = flood(im_thresholded, (0, 0))
-    im_no_holes_no_bg = binary_fill_holes(im_flooded)
-    im_no_holes = np.logical_or(im_flooded_mask, im_no_holes_no_bg)
-
-    # Label regions
-    im_labeled_centers = label(im_no_holes)
-
-    # Watershed segmentation using the labeled centers as seeds
-    im_labeled_regions = watershed(im_blurred, im_labeled_centers, mask=mask)
-    return im_labeled_regions
-
-
 def segment_hemijunctions(
     im_labels, im_intensities, edge_range=(10, 200), area_range=(20, 2000)
 ):
@@ -519,62 +464,6 @@ def cell_vertices_mask(im, vertex_dilation_factor, mask=None, periphery_excluded
     vertex_dil_shape = disk(vertex_dilation_factor)
     vertex_mask_dil = binary_dilation(vertex_mask, selem=vertex_dil_shape)
     return vertex_mask_dil
-
-
-def neighbor_array(im, mask=None, periphery_excluded=True):
-    """
-    Make an array of neighbors.
-
-    Take a 2D ndarray with regions labeled by integers, and return a
-    list of two element lists. First element is an integer label of a
-    a region. Second element is an array with shape (N,) where N is the
-    number of regions neighboring the first element label. The array
-    stores the set of neighbor labels.
-
-    Parameters
-    ----------
-    im : 2D ndarray
-        Labeled image with unique integers for every region
-    mask : 2D bool ndarray
-        True pixels are kept, False pixels are masked
-    periphery_excluded : bool
-
-    Returns
-    -------
-    neighbor_list : list of 2-element lists
-        First element is the region ID within True part of mask
-        Second element is a 1D array of IDs of its neighbors
-    """
-    mask = validate_mask(im, mask)
-    # Increment all the labels, to make sure there is no zero
-    # Zeros will be reserved for masked pixels
-    im2 = np.copy(im) + np.ones(np.shape(im), dtype="uint16")
-
-    # Set masked pixels to zero
-    im2[mask == False] = 0
-
-    # Determine the of region IDs to be returned
-    unique_labels = np.unique(im2)
-    if periphery_excluded:
-        unique_labels_in_field = np.unique(im2 * select_in_field(im2, mask))
-    else:
-        unique_labels_in_field = np.copy(unique_labels)
-
-    # Iterate over labels, appending to a list of pairs
-    neighbor_list = []
-    for region_id in list(unique_labels):
-        if region_id != 0 and region_id in unique_labels_in_field:
-            region = im2 == region_id
-            # Dilate one region
-            region_dilated = binary_dilation(region)
-            # Remove region itself to make a neighbor mask
-            neighbor_mask = np.logical_xor(region, region_dilated)
-            # Identify the list of neighbors
-            unique_neighbors = np.unique(neighbor_mask * im2)[1:]
-            # Subtract 1 to return to original labels numbers
-            neighbor_list.append([region_id - 1, unique_neighbors - 1])
-
-    return neighbor_list
 
 
 def neighbor_array_nr(im, mask=None, periphery_excluded=True):

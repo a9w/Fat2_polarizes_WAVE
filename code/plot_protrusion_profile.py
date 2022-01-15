@@ -11,6 +11,7 @@ position (um), ch1 intensity, ch2 intensity, ch3 intensity (AU).
 Output is labeled and unlabeled versions
 of a plot of the aligned, rescaled traces.
 """
+# Import packages
 from os import listdir
 import numpy as np
 import matplotlib.pyplot as plt

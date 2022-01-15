@@ -2,11 +2,11 @@
 
 # Import packages
 import os
-import sys
 import pims
 from imageio import volread
 import numpy as np
 
+# Internal functions
 from functions.measure import measure_hemijunctions_timelapse
 from functions.utils import select_files
 

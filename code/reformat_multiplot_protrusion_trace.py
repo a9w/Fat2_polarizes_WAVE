@@ -10,6 +10,7 @@ Output is 1 csv per sample with 3 columns:
 position, ch1 intensity, ch2 intensity.
 """
 
+# Import packages
 from os import listdir
 import numpy as np
 import pandas as pd

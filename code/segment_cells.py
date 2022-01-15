@@ -13,9 +13,9 @@ Output is labeled tifs of the segmented cells with name
 condition_samplenumber_seg.tif.
 """
 from os import listdir
-import sys
 from imageio import imread, volread, imwrite
-sys.path.append('/Users/Audrey/git/egg_chamber/code/')
+
+# Internal functions
 from functions.segment import (epithelium_watershed,
                              largest_object_mask)
 

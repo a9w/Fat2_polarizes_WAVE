@@ -2,7 +2,7 @@
 Import hemijunction data, calculate the mean length of protrusions
 for each egg chamber and other summary stats, output as a CSV.
 """
-
+# Import packages
 import numpy as np
 import pandas as pd
 from functions.utils import select_files

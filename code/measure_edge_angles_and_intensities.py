@@ -7,10 +7,13 @@ to be measured) and a segmented cell image tif.
 Output: A CSV with rows for each edge of each sample. Columns for condition,
 sample_num, edge angle, edge mean intensity +- background, +- vertices.
 """
+# Import packages
 import numpy as np
 import pandas as pd
 from imageio import imread, volread
 from skimage.morphology import binary_dilation, disk
+
+# Internal functions
 from functions.segment import (edge_between_neighbors,
                              interface_endpoints_coords,
                              neighbor_array_nr,
@@ -18,8 +21,7 @@ from functions.segment import (edge_between_neighbors,
                              cell_interiors_mask,
                              cell_vertices_mask
                             )
-from functions.utils import select_files
-from functions.utils.polar import points_to_angle
+from functions.utils import select_files, points_to_angle
 
 # Set locations of images (intensities and segmented), output
 DATA_DIR = ('../data/Factin_polarity/')
