@@ -1,8 +1,8 @@
 """Functions that deal with boolean images."""
 
 import numpy as np
+from scipy.ndimage import correlate
 from .validate_inputs import validate_mask
-
 
 def dilate_simple(im):
     """
@@ -138,3 +138,50 @@ def is_in_field(im, mask=None):
         return False
     else:
         return True
+
+def get_next_pixel(pt, edge):
+    '''
+    pt: tuple of ints (r, c)
+    edge: bool ed ndarray
+    '''
+
+    # Make 8-pixel neighborhood
+    local = np.copy(edge[pt[0]-1:pt[0]+2, pt[1]-1:pt[1]+2])
+
+    # Check for 4-connectivity neighbors
+    mask_4c = np.array([[0,1,0],
+                        [1,0,1],
+                        [0,1,0]])
+    neighbor_4c = np.logical_and(mask_4c, local)
+    if np.any(neighbor_4c):
+        neighbor_4c_indices = np.nonzero(neighbor_4c)
+        return (pt[0] + (neighbor_4c_indices[0][0] - 1),
+                pt[1] + (neighbor_4c_indices[1][0] - 1))
+
+    # Check for 8-connectivity neighbors
+    mask_8c = np.array([[1,0,1],
+                        [0,0,0],
+                        [1,0,1]])
+    neighbor_8c = np.logical_and(mask_8c, local)
+    if np.any(neighbor_8c):
+        neighbor_8c_indices = np.nonzero(neighbor_8c)
+        return (pt[0] + (neighbor_8c_indices[0][0] - 1),
+                pt[1] + (neighbor_8c_indices[1][0] - 1))
+    return False
+
+
+def get_ordered_perimeter(im):
+    # get a point
+    edge = np.copy(im)
+    rr, cc = np.nonzero(edge)
+    curr_pt = (rr[0], cc[0])
+    edge_rr, edge_cc = [curr_pt[0]], [curr_pt[1]]
+    while True:
+        edge[curr_pt] = False
+        next_pt = get_next_pixel(curr_pt, edge)
+        if next_pt:
+            edge_rr.append(next_pt[0])
+            edge_cc.append(next_pt[1])
+            curr_pt = next_pt
+        else:
+            return (np.array(edge_rr), np.array(edge_cc))
