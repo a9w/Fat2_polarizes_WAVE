@@ -56,7 +56,7 @@ for i in range(len(file_info)):
     condition = basename.split('_' + sample_num)[0]
 
     # Track progress
-    print(f'Analyzing image {str(i)}, {basename}')
+    print(f'Analyzing image {str(i)} out of {str(len(file_info))}, {basename}')
 
     # Select non-periphery cells
     tissue_mask = im_lab > 0
@@ -159,6 +159,6 @@ for i in range(len(file_info)):
 df_all = pd.concat(df_sample_ls)
 df_sorted = df_all.sort_values(['condition', 'sample_num'])
 df_sorted.reset_index(inplace=True, drop=True)
-out_path = (OUT_DIR + INTENSITIES_CHANNEL_NAME +
+df_path = (OUT_DIR + INTENSITIES_CHANNEL_NAME +
             '_edge_intensity_by_angle_sample.csv')
-df_sorted.to_csv(path_or_buf = out_path)
+df_sorted.to_csv(path_or_buf = df_path)

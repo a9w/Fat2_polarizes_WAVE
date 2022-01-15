@@ -44,5 +44,5 @@ spearmans_df = pd.DataFrame(list(zip(basenames, spearmans)),
                             columns = col_names)
 sample_num = basenames[0].split('_')[-1]
 condition = basenames[0].split('_' + sample_num)[0]
-out_path = OUT_DIR + 'Spearmans_r_' + condition + '_test.csv'
-spearmans_df.to_csv(path_or_buf = out_path)
+df_path = OUT_DIR + 'Spearmans_r_' + condition + '_test.csv'
+spearmans_df.to_csv(path_or_buf = df_path)

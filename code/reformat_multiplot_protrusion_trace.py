@@ -61,5 +61,5 @@ for basename in basenames:
         print("The arrays for {} have different dimensions".format(basename))
 
     # Output trace df as a csv
-    out_path = OUT_DIR + basename + '_reformatted.csv'
-    trace_df.to_csv(path_or_buf = out_path)
+    df_path = OUT_DIR + basename + '_reformatted.csv'
+    trace_df.to_csv(path_or_buf = df_path)

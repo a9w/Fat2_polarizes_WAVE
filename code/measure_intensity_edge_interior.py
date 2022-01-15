@@ -60,6 +60,9 @@ for i in range(len(file_info)):
     sample_nums.append(sample_num)
     condition.append(basename.split('_' + sample_num)[0])
 
+    # Track progress
+    print(f'Analyzing image {str(i)} out of {str(len(file_info))}, {basename}')
+
     # Make the masks
     tissue_mask = im_lab > 0
     tissue_mask = select_in_field(im_lab, tissue_mask)
@@ -83,6 +86,6 @@ df = pd.DataFrame(list(zip(condition, sample_nums, mean_tissue_ls,
                  columns = col_names)
 df_sorted = df.sort_values(['condition', 'sample_num'])
 df_sorted.reset_index(inplace=True, drop=True)
-out_path = (OUT_DIR + INTENSITIES_CHANNEL_NAME +
+df_path = (OUT_DIR + INTENSITIES_CHANNEL_NAME +
             '_mean_intensity_edge_interior_sample.csv')
-df_sorted.to_csv(path_or_buf = out_path)
+df_sorted.to_csv(path_or_buf = df_path)

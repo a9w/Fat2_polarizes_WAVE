@@ -53,6 +53,6 @@ df_asym = df_0to10_means[['condition', 'sample_num']].copy()
 df_asym['mean_intensity_0to10'] = df_0to10_means[['mean_int_no_verts_minus_bkgd']].copy()
 df_asym['mean_intensity_80to90'] = df_80to90_means[['mean_int_no_verts_minus_bkgd']].copy()
 df_asym['lt_over_side_enrichment'] = asym_vals
-out_path = (OUT_DIR + FLUOROPHORE +
+df_path = (OUT_DIR + FLUOROPHORE +
             '_leading_trailing_edge_enrichment_sample.csv')
-df_asym.to_csv(path_or_buf = out_path)
+df_asym.to_csv(path_or_buf = df_path)

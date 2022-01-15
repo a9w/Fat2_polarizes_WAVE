@@ -16,6 +16,7 @@ from functions.segment import largest_object_mask_timelapse
 
 # Hard code the path to the example time-lapse
 DATA_DIR = "./data/membrane_protrusivity_polarity/"
+OUT_DIR = "./data/membrane_protrusivity_polarity/"
 
 # Get paths and basenames for all intensities tif files in DATA_DIR
 # Expects files with name format condition_samplenumber.tif
@@ -35,6 +36,9 @@ for file in file_names_tif:
 for i in range(len(basenames)):
     basename = basenames[i]
     print(f"Segmenting and tracking {basename}")
+    # Track progress
+    print(f'Segmenting and tracking timelapse {str(i)} ' +
+          f'out of {str(len(basenames))}, {basename}')
 
 	# Import the raw images and convert to an array
     ims_intensities_path = os.path.join(DATA_DIR, f"{basename}.tif")
@@ -42,4 +46,4 @@ for i in range(len(basenames)):
     ims_mask = largest_object_mask_timelapse(ims_intensities)
 
 	# Make a TrackedTimelapse object
-    tt = TrackedTimelapse(ims_intensities, ims_mask, basename=basename, out_dir=DATA_DIR)
+    tt = TrackedTimelapse(ims_intensities, ims_mask, basename=basename, out_dir=OUT_DIR)
