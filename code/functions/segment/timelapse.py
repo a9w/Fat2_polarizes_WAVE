@@ -43,8 +43,8 @@ def segment_epithelium_timelapse(
         else:
             seed = None
         ims_labels[t] = epithelium_watershed(
-            img_as_ubyte(rescale_intensity(ims_intensities)),
-            mask=ims_mask,
+            img_as_ubyte(rescale_intensity(ims_intensities[t])),
+            mask=ims_mask[t],
             im_seeds=seed,
         )
     return ims_labels
