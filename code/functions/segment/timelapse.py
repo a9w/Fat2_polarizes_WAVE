@@ -3,13 +3,12 @@
 import numpy as np
 from skimage.util import img_as_ubyte
 from skimage.exposure import rescale_intensity
-from .correct import apply_corrections
 from .tissue import epithelium_watershed, largest_object_mask, segment_hemijunctions
 from ..utils import validate_mask
 
 
 def segment_epithelium_timelapse(
-    ims_intensities, ims_mask=None, ims_corr=None, ims_seeds=None
+    ims_intensities, ims_mask=None, ims_seeds=None
 ):
     """
     Segment a timelapse of a live-imaged epithelium.
@@ -21,9 +20,6 @@ def segment_epithelium_timelapse(
     ims_mask : 2D+T ndarray (t,y,x)
         Each timepoint is a 2D boolean array. True values are pixels to
         be included for analysis.
-    ims_corr : 2D+T+RGB ndarray (t,y,x,3)
-        Each timepoint is a 2D RGB image where there may be user-supplied
-        corrections to the segmentation or mask.
     ims_seeds : 2D+T ndarray (t,y,x)
         Each timepoint is a 2D array with integer region labels.
 
@@ -46,17 +42,9 @@ def segment_epithelium_timelapse(
             seed = ims_seeds[t]
         else:
             seed = None
-        if ims_corr is not None:
-            im_intensities_corr, im_mask_corr = apply_corrections(
-                ims_intensities[t], ims_corr[t], mask=ims_mask[t]
-            )
-        else:
-            im_intensities_corr = ims_intensities[t]
-            im_mask_corr = ims_mask[t]
-
         ims_labels[t] = epithelium_watershed(
-            img_as_ubyte(rescale_intensity(im_intensities_corr)),
-            mask=im_mask_corr,
+            img_as_ubyte(rescale_intensity(ims_intensities)),
+            mask=ims_mask,
             im_seeds=seed,
         )
     return ims_labels

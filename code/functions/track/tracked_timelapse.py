@@ -7,12 +7,10 @@ from skimage.segmentation import watershed
 from imageio import volread, volwrite
 from ..measure import measure_hemijunctions_timelapse
 from ..segment import (
-    overlay_corrections,
     select_in_field,
     segment_epithelium_timelapse,
     segment_hemijunctions_timelapse,
 )
-from ..plot import save_rgb_frame, save_rgb_timelapse
 from ..utils import validate_mask
 
 
@@ -187,23 +185,6 @@ class TrackedTimelapse:
         lab_dst = self.ims_tracked[t_dst, row, col]
         return lab_dst
 
-    def save_frame(self, t):
-        """Save a single tracked frame at the original pixel dimensions."""
-        if not os.path.isdir(self.frames_dir):
-            os.mkdir(self.frames_dir)
-        save_rgb_frame(
-            self.ims_intensities[t],
-            self.ims_tracked[t],
-            self.ims_mask[t],
-            im_overlay=overlay_corrections(self.ims_corrections[t]),
-            filename=self._make_frame_path(t),
-        )
-
-    def save_all_frames(self):
-        """Save all tracked and labeled frames."""
-        for t in range(self.t_total):
-            self.save_frame(t)
-
     def save_volume(self, volume="tracked", suffix=""):
         """Save a TIF stack of the tracked labels."""
         ims_out = self._pick_volume(volume)
@@ -212,17 +193,6 @@ class TrackedTimelapse:
             self.out_dir, f"{self.basename}_{volume}{sep}{suffix}.tif"
         )
         volwrite(vol_path, ims_out)
-
-    def save_movie(self, volume="tracked", suffix=""):
-        """Save an mp4 of the tracked dataset."""
-        ims_out = self._pick_volume(volume)
-        sep = "" if suffix == "" else "_"
-        movie_path = os.path.join(
-            self.out_dir, f"{self.basename}_{volume}{sep}{suffix}"
-        )
-        save_rgb_timelapse(
-            self.ims_intensities, ims_out, self.ims_mask, filename=movie_path
-        )
 
     def _pick_volume(self, volume):
         """Select a volume to output."""
