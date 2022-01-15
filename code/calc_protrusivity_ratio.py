@@ -67,4 +67,4 @@ df_sorted.reset_index(inplace=True, drop=True)
 
 # Output as CSV
 out_path = (OUT_DIR + OUT_NAME)
-df_protrusivity.to_csv(path_or_buf = out_path)
+df_sorted.to_csv(path_or_buf = out_path)
