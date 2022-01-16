@@ -25,15 +25,15 @@ from functions.utils import select_files
 DATA_DIR =('../data/Sra1GFP_level_polarity/')
 OUT_DIR =('../data/Sra1GFP_level_polarity/')
 
-# Set how wide the edge regions are
-EDGE_DIL_FACTOR = 5
-
 # Set total channels in intensities image file,
 # index of channel to measure,
 # name of measured channel (for output naming)
 CHANNELS_TOTAL = 3
 INTENSITIES_CHANNEL_IND = 1
 INTENSITIES_CHANNEL_NAME = "Sra1GFP"
+
+# Set how wide the edge regions are
+EDGE_DIL_FACTOR = 5
 
 # Get paths to intensities and segmented images
 file_info = select_files(DATA_DIR, ['.tif','_seg_corr.tif'])

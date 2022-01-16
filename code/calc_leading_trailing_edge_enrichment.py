@@ -12,9 +12,9 @@ mean, side interface mean, and the ratio between them.
 import pandas as pd
 
 # Set path to data and location to output asymmetry values CSV
-DATA_DIR = ('./data/Factin_polarity/')
-OUT_DIR = ('./data/Factin_polarity/')
-FLUOROPHORE = 'phalloidin' # match name in input file title
+DATA_DIR = ('./data/Sra1GFP_level_polarity/')
+OUT_DIR = ('./data/Sra1GFP_level_polarity/')
+FLUOROPHORE = 'Sra1GFP' # match name in input file title
 
 # Import edge fluorescence by angle data
 data_path = DATA_DIR + FLUOROPHORE + '_edge_intensity_by_angle_sample.csv'
