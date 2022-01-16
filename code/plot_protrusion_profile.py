@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 # Set data and output directories
 DATA_DIR = ('./data/protrusion_profile/Fat2_Abi_phal_multiplot_reformatted/')
-OUT_DIR = ('./plots/protrusion_profile/')
+OUT_DIR = ('./data/protrusion_profile/')
 
 # Set channel names, plotting colors
 CH1_NAME = "Fat2"
@@ -31,7 +31,7 @@ CH3_COLOR = "#FFDA00"
 CH3_COLOR_DARK = "#FFA500"
 
 # Set which intensity column's max value use for alignment
-# 1 = Fat2 or Ena, 2 = Abi, 3 = phalloidin
+# 1 = Fat2/Ena, 2 = Abi, 3 = phalloidin
 ALIGN_COL = 1
 
 # Import each trace as an array, make list of trace arrays
@@ -112,20 +112,23 @@ plot_basename = f'protrusion_profile_{CH1_NAME}_{CH2_NAME}_{CH3_NAME}'
 
 # Labeled version
 fig, ax = plt.subplots(1,figsize=(2,8))
+# Channel 3 (phalloidin)
 ax.plot(arr_avg_rescale[:,2], positions_um_cropped,
-        CH3_COLOR_DARK, linewidth=6, label=CH1_NAME)
+        CH3_COLOR_DARK, linewidth=6, label=CH3_NAME)
 ax.fill_betweenx(positions_um_cropped,
                  arr_avg_rescale[:,2]-std[:,2],
                  arr_avg_rescale[:,2]+std[:,2],
                  color=CH3_COLOR, alpha=0.3)
+# Channel 2 (Abi)
 ax.plot(arr_avg_rescale[:,1], positions_um_cropped,
         CH2_COLOR, linewidth=6, label=CH2_NAME)
 ax.fill_betweenx(positions_um_cropped,
                  arr_avg_rescale[:,1]-std[:,1],
                  arr_avg_rescale[:,1]+std[:,1],
                  color=CH2_COLOR, alpha=0.25)
+# Channel 1 (Ena/Fat2)
 ax.plot(arr_avg_rescale[:,0], positions_um_cropped,
-        CH1_COLOR, linewidth=6, label=CH3_NAME)
+        CH1_COLOR, linewidth=6, label=CH1_NAME)
 ax.fill_betweenx(positions_um_cropped,
                  arr_avg_rescale[:,0]-std[:,0],
                  arr_avg_rescale[:,0]+std[:,0],
@@ -139,31 +142,34 @@ ax.spines['left'].set_linewidth(4)
 ax.spines['bottom'].set_linewidth(4)
 
 # Adjust the ticks
-ax.set_xticks([0,1], fontsize=54)
+ax.set_xticks([0,1])
 ax.set_yticks([0,0.8])
 ax.tick_params(axis='both', width=4, length=6, labelsize=20)
 
 # Adjust the labels
 ax.set_xlabel("Fluorescence intensity (AU)", fontsize=20)
-ax.set_ylabel("Position along filopodium($\mu$m)", fontsize=20)
+ax.set_ylabel("Position along filopodium ($\mu$m)", fontsize=20)
 ax.legend(fontsize=20, loc='best', bbox_to_anchor=(0.5, 0.5, 1, 0.5))
 
 plt.savefig(OUT_DIR + plot_basename + '_labeled.pdf', bbox_inches='tight')
 
 # Unlabeled version
 fig, ax = plt.subplots(1,figsize=(2,8))
+# Channel 3 (phalloidin)
 ax.plot(arr_avg_rescale[:,2], positions_um_cropped,
         CH3_COLOR_DARK, linewidth=6)
 ax.fill_betweenx(positions_um_cropped,
                  arr_avg_rescale[:,2]-std[:,2],
                  arr_avg_rescale[:,2]+std[:,2],
                  color=CH3_COLOR, alpha=0.3)
+# Channel 2 (Abi)
 ax.plot(arr_avg_rescale[:,1], positions_um_cropped,
         CH2_COLOR, linewidth=6)
 ax.fill_betweenx(positions_um_cropped,
                  arr_avg_rescale[:,1]-std[:,1],
                  arr_avg_rescale[:,1]+std[:,1],
                  color=CH2_COLOR, alpha=0.25)
+# Channel 1 (Ena/Fat2)
 ax.plot(arr_avg_rescale[:,0], positions_um_cropped,
         CH1_COLOR, linewidth=6)
 ax.fill_betweenx(positions_um_cropped,
