@@ -32,8 +32,9 @@ Used to segment membrane protrusions, measure their length and orientation, and 
 2. Cell segmentation and tracking errors were manually corrected. This code is not included. 
 3. Cell edges and the membrane extensions from them were segmented for each pair of cells in each frame using script `segment_hemijunctions.py`. These are called "hemijunctions." Output: `basename_tracked_hjs.tif`
 4. The lengths and orientations of each hemijunction were measured with script `measure_hemijunction_traits.py`. Output: `basename_data_hjs.csv`. 
-5a. The protrusive to total hemijunction ratio was calculated with script `calc_protrusivity_ratio.py`. Output: `protrusivity_ratio_sample.csv`. 
-5b. The mean hemijunction length per sample was calculated with script `calc_mean_prot_len.py`. Output: `mean_prot_len_sample.csv`. 
+5a. The protrusive to total hemijunction ratio (where protrusivity is defined in terms of the average length of the hemijunction) was calculated with script `calc_protrusivity_ratio_avg_len.py`. Output: `protrusivity_ratio_avg_len_sample.csv`. 
+5b. The protrusive to total hemijunction ratio (where protrusivity is defined in terms of the longest length of the hemijunction) was calculated with script `calc_protrusivity_ratio_longest_len.py`. Output: `protrusivity_ratio_longest_len_sample.csv`. 
+5c. The mean hemijunction length per sample was calculated with script `calc_mean_prot_len.py`. Output: `mean_prot_len_sample.csv`. 
 
 #### `protrusion_profile`
 Used to generate "protrusion profile" plots: plots of mean fluorescence intensity distribution of multiple fluorophores along the length of filopodia. 
