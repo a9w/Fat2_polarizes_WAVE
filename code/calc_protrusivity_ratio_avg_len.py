@@ -19,13 +19,15 @@ CUTOFF_PERCENTILE = 98
 file_info = select_files(DATA_DIR, "_data_hjs.csv")
 
 # Calculate the protrusion length cutoff
-prot_lens = []
-for file in file_info:
+hj_avg_lens = []
+for i, file in enumerate(file_info):
     if CUTOFF_CONDITION in file["basename"]:
         df_hjs = pd.read_csv(file["_data_hjs.csv"])
-        prot_lens.extend(df_hjs["prot_len_um"])
-
-prot_cutoff = np.percentile(prot_lens, CUTOFF_PERCENTILE)
+        edge_len_nonstrt_um = df_hjs['edge_len_nonstrt_um']
+        hj_area_um2 = df_hjs['hj_area_px2'] * df_hjs['um2_per_px2']
+        hj_avg_len_um = hj_area_um2 / edge_len_nonstrt_um
+        hj_avg_lens.extend(hj_avg_len_um)
+prot_cutoff = np.percentile(hj_avg_lens, CUTOFF_PERCENTILE)
 
 # Measure the protrusivity ratio of each sample
 condition_ls = []
@@ -38,20 +40,20 @@ for file in file_info:
     # Get sample info
     sample_num = file["basename"].split("_")[-1]
     condition = file["basename"].split(f"_{sample_num}")[0]
-    
+
     # Import hemijunction data
     df_hjs = pd.read_csv(file["_data_hjs.csv"])
-    
+
     # Calculate average protrusion length
-    edge_len_nonstrt_um = df_hjs['edge_len_nonstrt_um'] * df_hjs['um_per_px']
-    hj_area_um2 = df_hjs['hj_area_um2']
+    edge_len_nonstrt_um = df_hjs['edge_len_nonstrt_um']
+    hj_area_um2 = df_hjs['hj_area_px2'] * df_hjs['um2_per_px2']
     hj_avg_len_um = hj_area_um2 / edge_len_nonstrt_um
-    
+
     # Calculate the protrusivity ratio
     prot_hjs = len(hj_avg_len_um[hj_avg_len_um > prot_cutoff])
     total_hjs = len(hj_avg_len_um)
     prot_ratio = prot_hjs/total_hjs
-    
+
     # Add to lists
     condition_ls.append(condition)
     sample_num_ls.append(sample_num)
