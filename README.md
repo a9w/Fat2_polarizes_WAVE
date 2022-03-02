@@ -63,7 +63,7 @@ Used to generate kymographs of Sra1-GFP distribution along the cell perimeter ov
 2. Intensities along the perimeters were found, aligned to the perimeter center, and output as a CSV using script `unroll_perimeter.py`. Output: `basename_unrolled_intensities.csv`. 
 
 ## License
-All creative content is licensed under ADD ME. 
+All creative content is licensed under the [Creative Commons CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) license.
 
 All software is distributed under the MIT license: 
 
