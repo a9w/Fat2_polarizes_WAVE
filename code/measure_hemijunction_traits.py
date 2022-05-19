@@ -14,10 +14,12 @@ DATA_DIR = "./data/membrane_protrusivity_polarity/"
 OUT_DIR = "./data/membrane_protrusivity_polarity/"
 
 # Iterate over datasets in the input_dir
+counter = 0
 datasets = select_files(DATA_DIR, ["_tracked_hjs.tif", "_tracked_refined.tif"])
 for dataset in datasets:
+    counter += 1
     basename = dataset["basename"]
-    print(f"***** {basename} *****")
+    print(f"***** Dataset {counter} of {len(datasets)}: {basename} *****")
     print("Getting metadata from basefile")
     ims_raw = pims.Bioformats(dataset["basefile"])
     meta = ims_raw.metadata
