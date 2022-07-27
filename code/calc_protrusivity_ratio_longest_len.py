@@ -9,8 +9,8 @@ import pandas as pd
 from functions.utils import select_files
 
 # Set location of hemijunction data, settings for protrusivity cutoff calc
-DATA_DIR = ("./data/membrane_protrusivity_polarity/")
-OUT_DIR = ("./data/membrane_protrusivity_polarity/")
+DATA_DIR = ("../data/membrane_protrusivity_polarity/")
+OUT_DIR = ("../data/membrane_protrusivity_polarity/")
 OUT_NAME = "protrusivity_ratio_longest_len_sample.csv"
 CUTOFF_CONDITION = "ck666"
 CUTOFF_PERCENTILE = 98

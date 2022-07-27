@@ -8,8 +8,9 @@ import pandas as pd
 from functions.utils import select_files
 
 # Set location of hemijunction data, output
-DATA_DIR = ("./data/membrane_protrusivity_polarity/")
-OUT_DIR = ("./data/membrane_protrusivity_polarity/")
+DATA_DIR = ("../data/membrane_protrusivity_polarity/")
+OUT_DIR = ("../data/membrane_protrusivity_polarity/")
+OUT_NAME = "mean_prot_avg_len_sample.csv"
 
 # Get paths to all hemijunction data in DATA_DIR
 file_info = select_files(DATA_DIR, "_data_hjs.csv")
@@ -31,7 +32,7 @@ for file in file_info:
     prot_area_um2 = df_hjs["hj_area_px2"] * df_hjs["um2_per_px2"]
     interface_len_um = df_hjs["edge_len_nonstrt_um"]
     df_hjs["prot_avg_len"] = prot_area_um2 / interface_len_um
-    
+
     # Calculate average protrusion length summary stats
     prot_avg_len_mean = df_hjs["prot_avg_len"].mean()
     prot_len_mean = df_hjs['prot_avg_len'].mean()
@@ -56,4 +57,5 @@ df_prot_len = pd.DataFrame(list(zip(condition_ls, sample_num_ls, prot_len_mean_l
                            columns = col_names)
 df_sorted = df_prot_len.sort_values(['condition', 'sample_num'])
 df_sorted.reset_index(inplace=True, drop=True)
-df_sorted.to_csv(path_or_buf = OUT_DIR + "mean_prot_avg_len_sample.csv")
+out_path = (OUT_DIR + OUT_NAME)
+df_sorted.to_csv(path_or_buf = out_path)
